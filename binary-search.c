@@ -3,7 +3,7 @@
 #include<time.h>
 
 // Biggest number possible in the array
-#define NUM_SIZE 999999
+#define MAX_NUM 99999
 
 void print_array(int array[], int array_length) {
     for(int i = 0; i < array_length; i++) {
@@ -18,9 +18,12 @@ int generate_int() {
         srand((unsigned int)time(NULL));
         initialized = 1;  // Initializes srand only once
     }
+
     int part1 = rand() % 32767;
     int part2 = rand() % 32767;
     int combined_value = (part1 << 15) | part2;
+
+    return combined_value % MAX_NUM;
 }
 
 // Swaps two elements
@@ -78,7 +81,6 @@ int partition(int array[], int low, int high) {
 
     // Swap array[i + 1] and pivot 
     swap(&array[i + 1], &array[high]);
-
     return i + 1;
 }
 
@@ -96,6 +98,7 @@ int binary_search(int array[], int array_length, int target) {
     int low = 0; 
     int iterations = 0;
     int high = array_length - 1;
+
     while(low <= high) {
         int mid = low + (high - low) / 2;
         iterations++;
@@ -108,6 +111,7 @@ int binary_search(int array[], int array_length, int target) {
             high = mid - 1; 
         }
     }
+
     printf("Iterations: %d\n", iterations);
     return -1;
 }
@@ -125,19 +129,21 @@ int main() {
     int target;
     int array_length;
     char arr_conditional;
+    int res = -1;
+    struct timespec sort_start, sort_end, search_start, search_end;
 
     // Creates an array dinamically based on user input for its length
-    printf("Enter a size for the array: ");
+    printf("Enter array size: ");
     scanf("%d", &array_length);
     int *array = malloc(array_length * sizeof(int));
     if (array == NULL) {
         fprintf(stderr, "Array memory allocation failed\n");
         return EXIT_FAILURE;
     }
+
     printf("Do you want to print the array? (This will impact performance) y/n: ");
     scanf(" %c", &arr_conditional);
     printf("\n");
-
     // Populates the array with random numbers from 0 to NUM_SIZE
     for(int i = 0; i < array_length; i++) {
         array[i] = generate_int();
@@ -145,15 +151,30 @@ int main() {
             printf("%d ", array[i]);
         }
     }
+    // Selects a sorting algorithm
+    int sort_choice;
+    printf("Choose a sort algorithm: \n1 - Selection sort \n2 - QuickSort\n");
+    scanf("%d", &sort_choice);
 
     // Record the sort start time
-    struct timespec sort_start, sort_end;
     clock_gettime(CLOCK_MONOTONIC, &sort_start);
-    quick_sort(array, 0, array_length-1);
+
+    switch(sort_choice) {
+        case 1:
+            selection_sort(array, array_length);
+            break;
+        case 2:
+            quick_sort(array, 0, array_length-1);
+            break;
+        default:
+            printf("Invalid choice");
+            break;
+    }
+
     // Record the sort end time and how long it took to execute
     clock_gettime(CLOCK_MONOTONIC, &sort_end);
     double sort_delta = calculate_time(sort_end, sort_start);
-    
+    // Prints the array if the user chose to do so
     if(check_arr_conditional(arr_conditional) == 1) {
         printf("\n\nSorted array: ");
         print_array(array, array_length);
@@ -162,11 +183,30 @@ int main() {
 
     printf("\nEnter a number to be found in the array: ");
     scanf(" %d", &target);
-    
-    // Record the search start time
-    struct timespec search_start, search_end;
-    clock_gettime(CLOCK_MONOTONIC, &search_start);
-    int res = binary_search(array, array_length, target);
+
+    // Selects a searching algorithm
+    int search_choice;
+    printf("Choose a search algorithm: \n1 - Linear sort \n2 - Binary search\n");
+    scanf("%d", &search_choice);
+    switch(search_choice) {
+        case 1:
+            // Record the search start time
+            clock_gettime(CLOCK_MONOTONIC, &search_start);
+            res = linear_search(array, array_length, target);
+            break;
+        case 2:
+            // Record the search start time
+            clock_gettime(CLOCK_MONOTONIC, &search_start);
+            res = binary_search(array, array_length, target);
+            break;
+        default:
+            // Record the search start time
+            clock_gettime(CLOCK_MONOTONIC, &search_start);
+            printf("Invalid choice\n");
+            return EXIT_FAILURE;
+            break;
+    }
+
     // Record the search end time and how long it took to execute
     clock_gettime(CLOCK_MONOTONIC, &search_end);
     double search_delta = calculate_time(search_end, search_start);
@@ -178,6 +218,7 @@ int main() {
         printf("Number not found\n");
     }
 
+    // Prints how long each algorithm took
     printf("--Sort time delta-- \n");
     print_time(sort_start, sort_end, sort_delta);
     printf("--Search time delta-- \n");
