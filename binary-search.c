@@ -126,8 +126,7 @@ int linear_search(int array[], int array_length, int target) {
 }
 
 int main() {
-    int target;
-    int array_length;
+    int target, sort_choice, search_choice, array_length;
     char arr_conditional;
     int res = -1;
     struct timespec sort_start, sort_end, search_start, search_end;
@@ -151,10 +150,15 @@ int main() {
             printf("%d ", array[i]);
         }
     }
-    // Selects a sorting algorithm
-    int sort_choice;
-    printf("Choose a sort algorithm: \n1 - Selection sort \n2 - QuickSort\n");
-    scanf("%d", &sort_choice);
+    printf("\n");
+
+    // Selects a sort and a search algorithm
+    printf("\nEnter a number to be found in the array: ");
+    scanf(" %d", &target);
+    printf("Select a sorting algorithm: \n1 - Selection sort \n2 - QuickSort\n");
+    scanf(" %d", &sort_choice);
+    printf("Select a searching algorithm: \n1 - Linear sort \n2 - Binary search\n");
+    scanf(" %d", &search_choice);
 
     // Record the sort start time
     clock_gettime(CLOCK_MONOTONIC, &sort_start);
@@ -174,20 +178,7 @@ int main() {
     // Record the sort end time and how long it took to execute
     clock_gettime(CLOCK_MONOTONIC, &sort_end);
     double sort_delta = calculate_time(sort_end, sort_start);
-    // Prints the array if the user chose to do so
-    if(check_arr_conditional(arr_conditional) == 1) {
-        printf("\n\nSorted array: ");
-        print_array(array, array_length);
-        printf("\n");
-    }
 
-    printf("\nEnter a number to be found in the array: ");
-    scanf(" %d", &target);
-
-    // Selects a searching algorithm
-    int search_choice;
-    printf("Choose a search algorithm: \n1 - Linear sort \n2 - Binary search\n");
-    scanf("%d", &search_choice);
     switch(search_choice) {
         case 1:
             // Record the search start time
@@ -211,15 +202,22 @@ int main() {
     clock_gettime(CLOCK_MONOTONIC, &search_end);
     double search_delta = calculate_time(search_end, search_start);
 
+    // Prints the array if the user chose to do so
+    if(check_arr_conditional(arr_conditional) == 1) {
+        printf("\n\nSorted array: ");
+        print_array(array, array_length);
+        printf("\n");
+    }
+
     // If the number is not found, the function returns -1
     if(res >= 0) {
-        printf("Number %d found at index %d\n", target, res);
+        printf("\nNumber %d found at index %d\n", target, res);
     } else {
-        printf("Number not found\n");
+        printf("\nNumber not found\n");
     }
 
     // Prints how long each algorithm took
-    printf("--Sort time delta-- \n");
+    printf("\n--Sort time delta-- \n");
     print_time(sort_start, sort_end, sort_delta);
     printf("--Search time delta-- \n");
     print_time(search_start, search_end, search_delta);
