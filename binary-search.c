@@ -155,9 +155,9 @@ int main() {
     // Selects a sort and a search algorithm
     printf("\nEnter a number to be found in the array: ");
     scanf(" %d", &target);
-    printf("Select a sorting algorithm: \n1 - Selection sort \n2 - QuickSort\n");
+    printf("Select a sorting algorithm: \n1 - No sorting \n2 - Selection sort \n3 - QuickSort\n");
     scanf(" %d", &sort_choice);
-    printf("Select a searching algorithm: \n1 - Linear sort \n2 - Binary search\n");
+    printf("Select a searching algorithm: \n1 - Linear sort \n----For sorted arrays---- \n2 - Binary search\n");
     scanf(" %d", &search_choice);
 
     // Record the sort start time
@@ -165,9 +165,11 @@ int main() {
 
     switch(sort_choice) {
         case 1:
-            selection_sort(array, array_length);
             break;
         case 2:
+            selection_sort(array, array_length);
+            break;
+        case 3:
             quick_sort(array, 0, array_length-1);
             break;
         default:
