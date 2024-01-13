@@ -1,9 +1,8 @@
+#include "algorithm_benchmark.h"
 #include<stdlib.h>
 #include<stdio.h>
 #include<time.h>
-
-// Biggest number possible in the array
-#define MAX_NUM 99999
+#include "unity.h"
 
 void print_array(int array[], int array_length) {
     for(int i = 0; i < array_length; i++) {
@@ -125,6 +124,7 @@ int linear_search(int array[], int array_length, int target) {
     return -1;
 }
 
+#ifndef TEST
 int main() {
     int target, sort_choice, search_choice, array_length;
     char arr_conditional;
@@ -157,7 +157,7 @@ int main() {
     scanf(" %d", &target);
     printf("Select a sorting algorithm: \n1 - No sorting \n2 - Selection sort \n3 - QuickSort\n");
     scanf(" %d", &sort_choice);
-    printf("Select a searching algorithm: \n1 - Linear sort \n----For sorted arrays---- \n2 - Binary search\n");
+    printf("Select a searching algorithm: \n1 - Linear search \n----For sorted arrays---- \n2 - Binary search\n");
     scanf(" %d", &search_choice);
 
     // Record the sort start time
@@ -227,3 +227,4 @@ int main() {
     free(array);
     return EXIT_SUCCESS;
 }
+#endif
