@@ -9,7 +9,7 @@
 
     int generate_int();
     
-    void swap(int *num1, int *num2);
+    void swap_integer(int *num1, int *num2);
 
     int check_arr_conditional(char cond);
 

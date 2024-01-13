@@ -34,7 +34,7 @@
                 "test_algorithm_benchmark.c",
                 "unity.c",
                 "-o",
-                "${fileDirname}\\algorithm_benchmark.exe",
+                "${fileDirname}\\test_algorithm_benchmark.exe",
                 "-DTEST"
             ],
             "options": {

@@ -26,7 +26,7 @@ int generate_int() {
 }
 
 // Swaps two elements
-void swap(int *num1, int *num2) {
+void swap_integer(int *num1, int *num2) {
     int temp = *num1;
     *num1 = *num2;
     *num2 = temp;
@@ -59,7 +59,7 @@ void selection_sort(int array[], int array_length) {
     for(int i = 0; i < array_length-1; i++) {
         for(int j = i+1; j < array_length; j++) {
             if(array[j] < array[i]) {
-                swap(&array[i], &array[j]);
+                swap_integer(&array[i], &array[j]);
             }
         }
     }
@@ -74,12 +74,12 @@ int partition(int array[], int low, int high) {
     for(int j = low; j <= high; j++) {
         if(array[j] < pivot) {
             i++;
-            swap(&array[i], &array[j]);
+            swap_integer(&array[i], &array[j]);
         }
     }
 
     // Swap array[i + 1] and pivot 
-    swap(&array[i + 1], &array[high]);
+    swap_integer(&array[i + 1], &array[high]);
     return i + 1;
 }
 
